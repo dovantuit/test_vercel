@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Quản lý Tinhte Fact</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #1a1a1a;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #0b5bce;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #1877f2;
+            font-weight: 600;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e4e6eb;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccd0d5;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .form-group input[type="text"]:focus {
+            outline: none;
+            border-color: #1877f2;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #1877f2;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0b5bce;
+        }
+
+        .btn-secondary {
+            background-color: #e4e6eb;
+            color: #1a1a1a;
+        }
+
+        .btn-secondary:hover {
+            background-color: #ccd0d5;
+        }
+
+        .btn-danger {
+            background-color: #e41e3f;
+            color: white;
+            padding: 6px 10px;
+        }
+
+        .btn-danger:hover {
+            background-color: #c91835;
+        }
+        
+        .btn-edit {
+            background-color: #ff9800;
+            color: white;
+            padding: 6px 10px;
+        }
+        .btn-edit:hover {
+            background-color: #e68a00;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e4e6eb;
+        }
+
+        th {
+            font-weight: 600;
+            color: #65676b;
+            font-size: 14px;
+        }
+
+        td {
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        .img-preview {
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #e4e6eb;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Admin - Quản lý Fact</h1>
+        <a href="index.html" class="nav-link">← Về trang chủ</a>
+    </div>
+
+    <div class="container">
+        <!-- Form Section -->
+        <div class="card">
+            <h2 id="formTitle">Thêm Fact mới</h2>
+            <form id="factForm">
+                <input type="hidden" id="factId">
+                
+                <div class="form-group">
+                    <label>Tên người dùng:</label>
+                    <input type="text" id="factName" required placeholder="Nhập tên người dùng">
+                </div>
+                
+                <div class="form-group">
+                    <label>Ảnh đại diện (Avatar):</label>
+                    <input type="file" id="factAvatar" accept="image/*">
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="factAvatarUrl" placeholder="Hoặc nhập đường dẫn URL ảnh đại diện" style="margin-bottom: 0;">
+                        <button type="button" class="btn btn-secondary" onclick="generateRandomAvatar()" style="white-space: nowrap;">🎲 Random Ảnh</button>
+                    </div>
+                    <img id="avatarPreview" src="" class="img-preview" style="display:none; width: 60px; height: 60px; border-radius: 50%; margin-top: 8px;">
+                </div>
+                
+                <div class="form-group">
+                    <label>Ảnh nền (Background):</label>
+                    <input type="file" id="factBg" accept="image/*">
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="factBgUrl" placeholder="Hoặc nhập đường dẫn URL ảnh nền" style="margin-bottom: 0;">
+                        <button type="button" class="btn btn-secondary" onclick="generateRandomBg()" style="white-space: nowrap;">🎲 Random Ảnh</button>
+                    </div>
+                    <img id="bgPreview" src="" class="img-preview" style="display:none; width: 100px; height: 150px; margin-top: 8px;">
+                </div>
+                
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-primary" id="saveBtn">Lưu thay đổi</button>
+                    <button type="button" class="btn btn-secondary" id="cancelBtn" style="display:none;">Hủy</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Table Section -->
+        <div class="card">
+            <h2>Danh sách Fact</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Avatar</th>
+                            <th>Tên</th>
+                            <th>Background</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="factTableBody">
+                        <!-- Dữ liệu được render bằng JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const defaultFactData = [
+            { id: 1, name: 'Cuong Nb', img: 'https://i.pravatar.cc/150?img=1', bg: 'images/fact_bg_1778074495222.png' },
+            { id: 2, name: 'Quang Vĩ MKT', img: 'https://i.pravatar.cc/150?img=2', bg: 'images/fact_bg_1778074495222.png' },
+            { id: 3, name: 'Cuong Nb', img: 'https://i.pravatar.cc/150?img=3', bg: 'images/fact_bg_1778074495222.png' },
+            { id: 4, name: 'LâmHuy.', img: 'https://i.pravatar.cc/150?img=4', bg: 'images/fact_bg_1778074495222.png' },
+            { id: 5, name: 'Dũng mục s...', img: 'https://i.pravatar.cc/150?img=5', bg: 'images/fact_bg_1778074495222.png' }
+        ];
+
+        let facts = JSON.parse(localStorage.getItem('tinhte_facts'));
+        if (!facts) {
+            facts = defaultFactData;
+            localStorage.setItem('tinhte_facts', JSON.stringify(facts));
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('factTableBody');
+            tbody.innerHTML = '';
+            facts.forEach(fact => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><img src="${fact.img}" class="img-preview" style="width: 40px; height: 40px; border-radius: 50%;"></td>
+                    <td><strong>${fact.name}</strong></td>
+                    <td><img src="${fact.bg}" class="img-preview" style="width: 40px; height: 60px;"></td>
+                    <td class="actions">
+                        <button class="btn btn-edit" onclick="editFact(${fact.id})">Sửa</button>
+                        <button class="btn btn-danger" onclick="deleteFact(${fact.id})">Xóa</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function saveFactData() {
+            localStorage.setItem('tinhte_facts', JSON.stringify(facts));
+            renderTable();
+        }
+
+        async function getBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        function generateRandomAvatar() {
+            const randomId = Math.floor(Math.random() * 1000);
+            const url = `https://i.pravatar.cc/150?u=${randomId}`;
+            document.getElementById('factAvatarUrl').value = url;
+            document.getElementById('avatarPreview').src = url;
+            document.getElementById('avatarPreview').style.display = 'block';
+            document.getElementById('factAvatar').value = '';
+        }
+
+        function generateRandomBg() {
+            const randomId = Math.floor(Math.random() * 1000);
+            const url = `https://picsum.photos/seed/${randomId}/400/600`;
+            document.getElementById('factBgUrl').value = url;
+            document.getElementById('bgPreview').src = url;
+            document.getElementById('bgPreview').style.display = 'block';
+            document.getElementById('factBg').value = '';
+        }
+
+        // Preview images when selecting file
+        document.getElementById('factAvatar').addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('avatarPreview').src = e.target.result;
+                    document.getElementById('avatarPreview').style.display = 'block';
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        document.getElementById('factBg').addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('bgPreview').src = e.target.result;
+                    document.getElementById('bgPreview').style.display = 'block';
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        // Handle form submit
+        document.getElementById('factForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const idStr = document.getElementById('factId').value;
+            const name = document.getElementById('factName').value;
+            
+            // Lấy dữ liệu Avatar
+            const avatarFile = document.getElementById('factAvatar').files[0];
+            let avatarUrl = document.getElementById('factAvatarUrl').value;
+            if (avatarFile) {
+                avatarUrl = await getBase64(avatarFile);
+            }
+            if (!avatarUrl) avatarUrl = 'https://i.pravatar.cc/150';
+
+            // Lấy dữ liệu Background
+            const bgFile = document.getElementById('factBg').files[0];
+            let bgUrl = document.getElementById('factBgUrl').value;
+            if (bgFile) {
+                bgUrl = await getBase64(bgFile);
+            }
+            if (!bgUrl) bgUrl = 'images/fact_bg_1778074495222.png';
+
+            if (idStr) {
+                // Update
+                const id = parseInt(idStr);
+                const index = facts.findIndex(f => f.id === id);
+                if (index !== -1) {
+                    facts[index] = { ...facts[index], name, img: avatarUrl, bg: bgUrl };
+                }
+            } else {
+                // Create
+                const newFact = {
+                    id: Date.now(),
+                    name,
+                    img: avatarUrl,
+                    bg: bgUrl
+                };
+                facts.unshift(newFact); // Thêm lên đầu danh sách
+            }
+
+            saveFactData();
+            resetForm();
+            alert('Lưu thành công!');
+        });
+
+        function deleteFact(id) {
+            if(confirm('Bạn có chắc chắn muốn xóa Fact này?')) {
+                facts = facts.filter(f => f.id !== id);
+                saveFactData();
+            }
+        }
+
+        function editFact(id) {
+            const fact = facts.find(f => f.id === id);
+            if(fact) {
+                document.getElementById('formTitle').innerText = 'Sửa Fact';
+                document.getElementById('factId').value = fact.id;
+                document.getElementById('factName').value = fact.name;
+                
+                // Clear file inputs when editing
+                document.getElementById('factAvatar').value = '';
+                document.getElementById('factBg').value = '';
+
+                // Chỉ set URL text nếu url không phải base64 (chứa 'data:image') để tránh text quá dài
+                document.getElementById('factAvatarUrl').value = fact.img.startsWith('data:image') ? '' : fact.img;
+                document.getElementById('factBgUrl').value = fact.bg.startsWith('data:image') ? '' : fact.bg;
+                
+                document.getElementById('avatarPreview').src = fact.img;
+                document.getElementById('avatarPreview').style.display = 'block';
+                document.getElementById('bgPreview').src = fact.bg;
+                document.getElementById('bgPreview').style.display = 'block';
+
+                document.getElementById('cancelBtn').style.display = 'inline-block';
+                document.getElementById('factName').focus();
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('formTitle').innerText = 'Thêm Fact mới';
+            document.getElementById('factForm').reset();
+            document.getElementById('factId').value = '';
+            document.getElementById('avatarPreview').style.display = 'none';
+            document.getElementById('bgPreview').style.display = 'none';
+            document.getElementById('cancelBtn').style.display = 'none';
+        }
+
+        document.getElementById('cancelBtn').addEventListener('click', resetForm);
+
+        // Khởi tạo ban đầu
+        renderTable();
+    </script>
+</body>
+</html>

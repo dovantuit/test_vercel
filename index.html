@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tinh Tế - Mạng Xã Hội</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0b5bce;
+            --light-blue: #1877f2;
+            --text-dark: #1a1a1a;
+            --text-gray: #65676b;
+            --bg-light: #f0f2f5;
+            --border-color: #e4e6eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: var(--text-dark);
+        }
+
+        /* --- HEADER --- */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            position: relative;
+        }
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            top: 10px;
+            right: 12px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-title {
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        .logo-subtitle {
+            font-size: 10px;
+            color: var(--text-gray);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .header-center {
+            flex: 1;
+            max-width: 600px;
+            margin: 0 40px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: var(--bg-light);
+            border-radius: 30px;
+            padding: 10px 20px;
+            gap: 10px;
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        .search-icon {
+            color: var(--text-gray);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-write {
+            background-color: var(--light-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-write:hover {
+            background-color: var(--primary-blue);
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--bg-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            color: var(--text-dark);
+            border: none;
+            transition: background 0.2s;
+        }
+
+        .icon-btn:hover {
+            background-color: #e4e6eb;
+        }
+
+        .badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background-color: #e41e3f;
+            color: white;
+            font-size: 11px;
+            font-weight: bold;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        /* --- MAIN LAYOUT --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* --- TINHTE FACT --- */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .view-all {
+            color: var(--light-blue);
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .fact-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 16px;
+            scrollbar-width: thin;
+            scrollbar-color: #ccd0d5 transparent;
+        }
+
+        .fact-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .fact-scroll::-webkit-scrollbar-thumb {
+            background-color: #ccd0d5;
+            border-radius: 10px;
+        }
+
+        .fact-card {
+            min-width: 110px;
+            height: 190px;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .fact-card:hover {
+            transform: scale(1.02);
+        }
+
+        .fact-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+        }
+
+        .fact-card.create-new {
+            background: linear-gradient(180deg, #f0f2f5 0%, #d8dadd 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fact-card.create-new::after {
+            display: none;
+        }
+
+        .add-icon-wrapper {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .add-icon {
+            color: var(--light-blue);
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .create-text {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-dark);
+            z-index: 1;
+        }
+
+        .fact-user-avatar {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid var(--light-blue);
+            z-index: 2;
+            object-fit: cover;
+        }
+
+        .fact-user-name {
+            position: absolute;
+            bottom: 12px;
+            left: 8px;
+            right: 8px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        /* --- MAIN GRID --- */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1.2fr 1fr;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        /* Left Feature */
+        .feature-large {
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 16/10;
+            cursor: pointer;
+        }
+
+        .feature-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .feature-large:hover img {
+            transform: scale(1.03);
+        }
+
+        /* Middle Feature */
+        .feature-mid {
+            cursor: pointer;
+        }
+
+        .feature-mid-img {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 16/10;
+            margin-bottom: 12px;
+        }
+
+        .feature-mid-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .feature-mid:hover .feature-mid-img img {
+            transform: scale(1.03);
+        }
+
+        .feature-mid-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .feature-mid-meta {
+            color: var(--text-gray);
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .feature-mid-desc {
+            color: var(--text-gray);
+            font-size: 14px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Right List */
+        .quick-news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .news-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            cursor: pointer;
+        }
+
+        .news-item:hover .news-title {
+            color: var(--light-blue);
+        }
+
+        .news-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--light-blue);
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+
+        .news-content {
+            flex: 1;
+        }
+
+        .news-title {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.4;
+            transition: color 0.2s;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-thumb {
+            width: 90px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .quick-news {
+                grid-column: span 2;
+                margin-top: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .quick-news {
+                grid-column: span 1;
+            }
+            .header-center {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <div class="logo-icon"></div>
+            <div class="logo-text">
+                <span class="logo-title">Tinh tế</span>
+                <span class="logo-subtitle">MẠNG XÃ HỘI</span>
+            </div>
+        </div>
+        
+        <div class="header-center">
+            <div class="search-bar">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" placeholder="Tìm sản phẩm công nghệ, cộng đồng,">
+            </div>
+        </div>
+
+        <div class="header-right">
+            <button class="btn-write">Viết Bài Chia Sẻ</button>
+            <button class="icon-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            </button>
+            <button class="icon-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                <span class="badge">2</span>
+            </button>
+            <img src="https://i.pravatar.cc/150?img=11" alt="Avatar" class="avatar">
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <div class="section-header">
+            <h2 class="section-title">Tinhte Fact</h2>
+            <a href="#" class="view-all">Xem tất cả</a>
+        </div>
+
+        <div class="fact-scroll" id="factScroll">
+            <div class="fact-card create-new">
+                <div class="add-icon-wrapper">
+                    <span class="add-icon">+</span>
+                </div>
+                <span class="create-text">Tạo Fact mới</span>
+            </div>
+            
+            <!-- Generate some fact cards -->
+            <script>
+                const defaultFactData = [
+                    { id: Date.now() + 1, name: 'Cuong Nb', img: 'https://i.pravatar.cc/150?img=1', bg: 'images/fact_bg_1778074495222.png' },
+                    { id: Date.now() + 2, name: 'Quang Vĩ MKT', img: 'https://i.pravatar.cc/150?img=2', bg: 'images/fact_bg_1778074495222.png' },
+                    { id: Date.now() + 3, name: 'Cuong Nb', img: 'https://i.pravatar.cc/150?img=3', bg: 'images/fact_bg_1778074495222.png' },
+                    { id: Date.now() + 4, name: 'LâmHuy.', img: 'https://i.pravatar.cc/150?img=4', bg: 'images/fact_bg_1778074495222.png' },
+                    { id: Date.now() + 5, name: 'Dũng mục s...', img: 'https://i.pravatar.cc/150?img=5', bg: 'images/fact_bg_1778074495222.png' },
+                    { id: Date.now() + 6, name: 'hoanbnhbg', img: 'https://i.pravatar.cc/150?img=6', bg: 'images/fact_bg_1778074495222.png' }
+                ];
+
+                // Khởi tạo data trong localStorage nếu chưa có
+                if (!localStorage.getItem('tinhte_facts')) {
+                    localStorage.setItem('tinhte_facts', JSON.stringify(defaultFactData));
+                }
+
+                const factData = JSON.parse(localStorage.getItem('tinhte_facts')) || [];
+                const factScroll = document.getElementById('factScroll');
+                
+                factData.forEach(fact => {
+                    const card = document.createElement('div');
+                    card.className = 'fact-card';
+                    // Kiểm tra xem bg có phải là data base64 hay url không
+                    const bgUrl = fact.bg || 'images/fact_bg_1778074495222.png';
+                    card.style.backgroundImage = `url('${bgUrl}')`;
+                    
+                    const avatarUrl = fact.img || 'https://i.pravatar.cc/150';
+                    card.innerHTML = `
+                        <img src="${avatarUrl}" class="fact-user-avatar" alt="${fact.name}">
+                        <div class="fact-user-name">${fact.name}</div>
+                    `;
+                    factScroll.appendChild(card);
+                });
+            </script>
+        </div>
+
+        <div class="content-grid">
+            <div class="feature-large">
+                <img src="images/hero_banner_thailand_1778074457849.png" alt="Galaxy S26 Ultra Thailand">
+            </div>
+
+            <div class="feature-mid">
+                <div class="feature-mid-img">
+                    <img src="images/laptop_amd_1778074472434.png" alt="Laptop AMD">
+                </div>
+                <h3 class="feature-mid-title">[QC] Tại sao nên lựa chọn laptop chip AMD trong mùa "bão giá"?</h3>
+                <div class="feature-mid-meta">TTKM</div>
+                <div class="feature-mid-desc">Trong cơn "bão giá", những mẫu laptop chip AMD đang nổi lên nhờ sự tối ưu về mặt chi phí và hiệu năng. Đây là lý do...</div>
+            </div>
+
+            <div class="quick-news">
+                <div class="section-header">
+                    <h2 class="section-title">Xem nhanh</h2>
+                    <a href="#" class="view-all">Xem tất cả</a>
+                </div>
+                
+                <div class="quick-news-list">
+                    <div class="news-item">
+                        <div class="news-dot"></div>
+                        <div class="news-content">
+                            <div class="news-title">Rò rỉ ảnh chụp thực tế của tai nghe Sony 1000X The ColleXion...</div>
+                        </div>
+                        <img src="images/fact_bg_1778074495222.png" alt="News" class="news-thumb">
+                    </div>
+                    <div class="news-item">
+                        <div class="news-dot"></div>
+                        <div class="news-content">
+                            <div class="news-title">5 lý do giải thích vì sao giá smartphone cao cấp mới ra mắt tăng rất...</div>
+                        </div>
+                        <img src="images/hero_banner_thailand_1778074457849.png" alt="News" class="news-thumb">
+                    </div>
+                    <div class="news-item">
+                        <div class="news-dot"></div>
+                        <div class="news-content">
+                            <div class="news-title">Xiaomi 18 Ultra có thể dùng chip tự phát triển Xring O3, xung nhịp...</div>
+                        </div>
+                        <img src="images/laptop_amd_1778074472434.png" alt="News" class="news-thumb">
+                    </div>
+                     <div class="news-item">
+                        <div class="news-dot"></div>
+                        <div class="news-content">
+                            <div class="news-title">Trải nghiệm nhanh màn hình LG Gram View: Mở rộng không gian làm việc...</div>
+                        </div>
+                        <img src="images/fact_bg_1778074495222.png" alt="News" class="news-thumb">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
